@@ -215,6 +215,36 @@ In C, the keyword `void` means it does not matter.
 
 
 ## 2 - Memory and Pointers: What Are You Pointing At?
+C gives you great control over how your program handles memory, and becoming comfortable with pointers and memory addressing is key to mastering C.
+
+A **pointer** is the address of a piece of data in memory.
+Pointers are helpful as they allow you to work on the same piece of data rather than copies of the data.
+Furthermore, they allow you to pass just the pointer to the address in memory rather than passing all the data.
+
+Everytime you declare a variable in C, the computer creates space for it in memory.
+Variables declared inside a function are stored in the **stack**.
+Variables declared outside any function are stored in the **globals** section of memory.
+The `&` operator returns the address of the variable, as such `&x` returns the address of the `x` in memory.
+An address is also what is called a **pointer**.
+
+When you are calling functions with parameters and passing variables as arguments, only the value of the variables will be sent to the function.
+Thus, the value of the original variable will not be changed if you change the value of the parameter variables.
+To make up for this we can pass pointers.
+This will tell the function where the current variable is stored, and then the function will be able to update the values of the original variable.
+
+To get the address of a variable: `&x`.
+To read the contents of an address: `*x`.
+To change the contents of an address: `*x = 199`.
+
+**Bullet Points**
+* Variables are allocated storage in memory.
+* Local variables are stored in the stack.
+* Global variables are stored in the globals section.
+* Pointers are just variables that store memory addresses.
+* The `&` operator finds the address of a variable.
+* The `*` operator can read the contents of a memory address.
+* The `*` can also set the contents of a memory address.
+
 
 ## 2.5 - Strings: String Theory
 
