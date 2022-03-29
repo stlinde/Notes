@@ -1,5 +1,7 @@
 # Head First C
 
+***Authors***: David Griffiths & Dawn Griffeths
+
 
 ## Introduction
 If you really want to learn, and you want to learn more quickly and more deeply, pay attention to how you pay attention.
@@ -138,6 +140,78 @@ The `switch` statement checks a single value, when it hits a true `case` stateme
 It will continue to run until it hits a `break`.
 The advantages of the `switch` statement are clarity and that you can use fall-through logic to reuse sections of code for different cases.
 You cannot use a `switch` statement to check strings or any kind of arrays, the `switch` statement will only check a single value.
+
+Loops control how many times a piece of code will be run.
+A `while` loop runs the code attached to it while some condition remains true.
+The `while` loop is structured as follows:
+```c
+while (<some condition>) {
+    ... /* Do something here */
+}
+```
+If the condition evaluates to `false` at the first loop, then the code will never be run.
+If we want to ensure that the code is run at least once we can use a `do ... while` loop, as follows:
+
+```c
+do {
+    ... /* Do something here */
+} while(<some condition>)
+```
+
+A loop often follows the structure as follows:
+1. Do something simple before the loop, like set a counter.
+2. Have a simple test condition on the loop.
+3. Do something at the end of a loop, like update a counter.
+
+The `for` loop makes this structure simple.
+The below `while` loop can be written more simply as a `for` loop.
+```c
+int counter = 1;
+while (counter < 11) {
+    printf("%i green bottles, hanging on a wall\n", counter);
+    counter++;
+}
+```
+The `for` loop version fo the above while loop:
+```c
+for (counter =1; counter <11; counter++) {
+    printf("%i green bottles, hanging on a wall\n", counter);
+}
+```
+The first argument in the parenthesis initializes the loop variable, the second is the condition, the third is the code that will run after the loop.
+
+To break out of a loop if some condition is met you can use the `break` statement.
+The `break` statement will break the loop and skip whatever follows inside the loop.
+Avoid using too many break statements as they might make your code hard to read.
+Furthermore, `break` statements do not break `if` statements.
+
+To continue to the next iteration of the loop you can use the `continue` statement.
+
+All functions in C follow the same format.
+They all contain the following:
+* A return type (`int` in the `main()` function).
+* A function name (`main` is the name of the `main()` function).
+* A body which is surrounded by brackets. 
+* A `return` statement (unless the return type is `void`).
+
+Furthermore, a function can take parameters or arguments, stated between the parentheses after the function name.
+
+The return type `void` can be given to functions that does not have anything meaningful to return.
+In C, the keyword `void` means it does not matter.
+
+
+**Bullet Points**
+* A `while` loop runs code as long as its condition is true.
+* A `do-while` loop is similar, but runs the code at least once.
+* A `for` loop is a more compact way of writing certain kinds of loops.
+* You can exit a loop at any time with `break`.
+* You can skip the loop condition at any time with `continue`.
+* The `return` statement returns a value from a function.
+* `void` functions don't need `return` statements.
+* Most expressions in C have values.
+* Assignments have values so you can chain them together (`x = y = 0`).
+
+
 
 
 ## 2 - Memory and Pointers: What Are You Pointing At?
