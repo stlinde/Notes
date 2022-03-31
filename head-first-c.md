@@ -382,6 +382,38 @@ The code segment is also read-only.
 This is the part of the memory where the actual assembled code gets loaded.
 
 ## 2.5 - Strings: String Theory
+The library `<string.h>` is part of the C Standard Library and is dedicated to string manipulation.
+The C Standard Library is a set of useful code that comes with the compiler.
+The library is broken into sections, where each section has a header file.
+A header file lists all of the functions that live in a particular section of the library.
+
+Strings can be stored in an array in C:
+```c
+char tracks[][80] = {
+    "This is the first string",
+    "This is the second string, an array",
+    "Here we have another string." 
+}
+```
+
+The first square brackets are for the outer array and the second for the inner, thus the strings in this case.
+
+The `strchr()` function find the location of a character inside a string.
+The `strcmp()` function compare two strings.
+The `strstr()` function finds the location of a string inside another string.
+The `strcpy()` function copies one string to another.
+The `strlen()` function finds the length of a string.
+The `strcat()` function concatenates two strings.
+
+**Bullet Points**:
+* You can create an array of arrays with `char strings[...][...]`.
+* The first set of brackets is used to access the outer array.
+* The second set of brackets is used to access the details of each of the inner arrays.
+* The `string.h` file gives you access to a set of string manipulations in the C Standard Library.
+* You can create several functions in a C program, but the computer will always  un the `main()` first.
+
+
+
 
 ## 3 - Creating Small Tools: Do One Thing and Do It Well
 
