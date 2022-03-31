@@ -246,6 +246,141 @@ To change the contents of an address: `*x = 199`.
 * The `*` can also set the contents of a memory address.
 
 
+When you create an array, the array variable can be used as a pointer to the start of the array in memory.
+The computer will reserve space in memory for all items in the array and the sentinel character`\O`.
+The address of the array is the address of the first character.
+Thus, when calling the variable the pointer to the first character will be returned.
+
+**Bullet Points**
+* An array variable can be used as a pointer.
+* The array variable points to the first element in the array.
+* If you declare an array argument to a function, it will be treated as a pointer.
+* The `sizeof` operator returns the space taken by a piece of data.
+* You can also call `sizeof` for a data type, such as `sizeof(int)`.
+* `sizeof(pointer)` returns 4 on a 32-bit system and 8 on a 64-bit system.
+
+An operator is compiled to a sequence of instructions by the compiler.
+But if the code calls a function, it has to jump to a separate piece of code.
+
+The `sizeof` is an operator, and is therefore calculated at compile-time.
+
+On most systems C compilers make the `long` data type the same size as a memory address.
+So if `p` is a pointer and you want to store it in a `long` variable `a`, you can type `a=(long)p`.
+
+If you run `sizeof(array)` within the same scope as the array is declared within, C knows that you want to know the size of the array.
+
+When you create a pointer variable, the machine will allocate 4 or 8 bytes of space to store it.
+Thsi is not so with an array.
+When creating an array, the computer will allocate space to store the array, but it won't allocate any memory to store the array variable. 
+The compiler simply plugs in the address of the start of the array.
+
+But because array variables don't have allocated storage, it means that you can't point them at anything else.
+
+Because array variables are slightly different from pointer variables, you need to be careful when you assign arrays to pointers.
+If you assign an array to a pointer variable, then the pointer variable will only contain the address of the array.
+The pointer doesn't know anything about the size of the array, so a little information has been lost.
+That loss of information is called decay.
+
+Every time you pass an array to a function, you'll decay to a pointer, so it's unavoidable.
+But you need to keep track of where arrays decay in your code because it can cause very subtle bugs.
+
+An array variable can be used as a pointer to the first element in any array.
+That means that you can read the first element of the array either by using the brackets notation *or* using the `*` operator like this:
+`array[0]`
+`*array`
+
+But because an address is just a number, that means you can do *pointer arithmetic* and actually *add* values to a ointer value and find the next address.
+So you can either use brackets to read the element with index 2, or you can just add 2 to the address of the first element:
+```c
+printf("3rd order: %i drinks\n", drinks[2]);
+printf("3rd order: %i drinks\n", *(drinks + 2));
+```
+
+In general the two expressions `drinks[i]` and `*(drinks + i)` are equivalent.
+That's why arrays begin with index 0.
+The index is just the number that's added to the pointer to find the location of the element.
+
+**Bullet Points**
+* Array variables can be used as pointers, but array variables are not quite the same.
+* `sizeof` is different for array and pointer variables.
+* Array variables cannot point to anything else.
+* Passing an array variable to a pointer decays it.
+* Arrays start at zero because of pointer arithmetic.
+* Pointer variables have types so they can adjust pointer arithmetic.
+
+You need to understand pointer arithmetic as it can be used to process arrays of data efficiently.
+You can also subtract numbers from pointers, but be careful that you do not go back before the start of the allocated space in the array.
+C does the pointer arithmetic calculations at compile-time.
+
+The `scanf()` function is used for recording user input.
+The `scanf()` function accepts a pointer as it's second parameter, the pointer is for storing the input.
+When updating the contents of an array functions need the pointer to the array, as we are interested in updating the memory of the array. 
+This is why the `scanf()` function takes a pointer and not the value of the array as input
+When using `scanf()` for an array, the pointer is automatically passed, as this is what is returned when calling an array variable.
+This is not so with other variables.
+If we want to change an interger variable for example, we need to pass the pointer to the address of the integer and not the integer value itself.
+Thus, the correct use of `scanf()` for integers is `scanf("Enter you integer input: %i", &var)`
+
+Remember to specify the number of characters allowed to enter in the `scanf()` function.
+If this is not done, you might run into a segmentation fault.
+This is because you were trying to modify memory that is not allocated to the string variable.
+Furthermore, if the entered data is too large this might cause a buffer overflow.
+
+An alternative to the `scanf()` function is the `fgets()` function.
+The difference is that `fgets()` must be given a max length of input.
+The `fgets()` is used as follows `fgets(array, sizeof(array), stdin)`, where `array` is the array that must be updated, `sizeof(array)` is the maximum length of the input, and `stdin` is specifying that the input will come from the keyboard.
+The `fgets()` function includes the sentinel character `\0` in the max size.
+`fgets()` can read a single string with spaces included, unlike `scanf()`.
+
+If you need to enter *structured data* with several fields, you want to use `scanf()`.
+If you are entering a *single unstructured string*, then `fgets()` is probably the way to go.
+
+Constants in C are stored in the constants part of memory in the C program.
+A value stored in the constants part of memory is read-only.
+String literals are stored as constants.
+If you want to make changes to a string literal you must create a copy.
+
+**Bullet Points**
+* If you see a `*` in a variable declaration, it means the variable will be a pointer.
+* String literals are stored in read-only memory.
+* If you want to modify a string, you need to make a copy in a new array.
+* You can declare a `char` pointer as `const char *` to prevent the code from using it to modify a string.
+
+ When adding the `const` modifier to a variable you will get a compile-time error if you are trying to change that variable some place else in the program.
+
+#### Memory Memorizer
+**Stack**:
+
+This is the section of memory used for local variable storage.
+Every time you call a function, all of the function's local variables get created on the stack.
+It's called the stack because it is like a stack of plates: variables is added to the stack when you enter a function, and get taken of the stack when you leave.
+The stack works upside down.
+It starts at the top of memory and grows downward.
+
+
+**Heap**:
+
+The heap is for dynamic memory: pieces of data that get created when the program is running and then hang around a long time.
+
+
+**Globals**:
+
+A global variable is a variable that lives outside all of the functions and is visible to all of them. 
+Globals get created when the program first runs, and you can update them freely.
+
+
+**Constants**:
+
+Constants are also created when the program first runs, but they are stored in read-only memory.
+Constants are things like string literals that your will need when the program is running, but you will never want them to change.
+
+
+**Code**:
+
+A lot of operating systems place the code in the lowest memory address. 
+The code segment is also read-only.
+This is the part of the memory where the actual assembled code gets loaded.
+
 ## 2.5 - Strings: String Theory
 
 ## 3 - Creating Small Tools: Do One Thing and Do It Well
