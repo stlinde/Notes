@@ -416,6 +416,121 @@ The `strcat()` function concatenates two strings.
 
 
 ## 3 - Creating Small Tools: Do One Thing and Do It Well
+Small tools written in C perform specialized small tasks, such as reading and writing files, or filtering data.
+If you want to perform more complex tasks, you can even link several tools together.
+
+In this chapter we'll go over
+* command-line options,
+* how to manage streams of information,
+* redirection.
+
+When you have a big problem to solve, you can break it down into a series of small problems, and then write small tools for each of them.
+
+Tools that read data line by line, process it, and write it out again are called **filters**.
+If you have a Unix machine you already have a few filter tools installed.
+`head`: This tool displays the first few lines of a file.
+`tail`: This filter displays the lines at the end of a file.
+`sed`: The stream editor lets you do things like search and replace text.
+You can combine filters into filter chains.
+
+`scanf()` and `printf()` don't talk directly to the keyboard and display.
+Instead, they use the Standard Input and Standard Output.
+The Standard Input and Standard Output are created by the operating system when the program runs.
+Thus, the program receives data through the Standard Input and outputs data through the Standard Output.
+
+The operating system controls how data gets into and out of the Standard Input and Output.
+If you run a program from the terminal, the operating system will send all of the keystrokes from the keyboard into the Standard Input.
+If the operating system reads any data from the Standard Output, by default it will send that data to the display.
+
+You can redirect the Standard Input and Output so that they read and write data somewhere else, such as to and from files.
+
+Instead of entering data at the keyboard, you can use the `<` operator to read the data from a file:
+```bash
+./geo2json < gpsdata.csv
+```
+The `<` operator tells the operating system that the Standard Input of the program should be connected to the data *gpsdata.csv* file. 
+So you can send the program data directly from a file.
+
+To redirect the Standard Output to a file, you need to use the > operator:
+```bash
+./geo2json < gpsdata.csv > output.json
+```
+
+Redirecting the Standard Input and Output causes our programs to output the error messages to the file as well. 
+To cope with this we can use Standard Error.
+
+The Standard Output is the default way of outputting data from a program.
+The Standard Error is a second output that was created for sending error messages.
+
+By default the Standard Error is sent to the display.
+If we redirect the Standard Input and Output to files, the Standard Error will continue to send data to the display.
+
+`printf()` sends data to the Standard Output.
+The `printf()` function is a version of a more general function called `fprintf()`.
+The `fprintf()` function allows you to choose where you want to send the text to, either `stdout` or `stderr`.
+
+The `stderr` can be redirected as well by using `2> errors.txt` instead of `>`.
+
+**Bullet Points**:
+* The `printf()` function sends data to the Standard Output.
+* The Standard Output goes to the display by default.
+* You can redirect the Standard Output to a file by using `>` on the command line.
+* `scanf()` reads the data from the Standard Input.
+* You can redirect the Standard Input to read a file by using `<` on the command line.
+* The Standard Error is reserved for outputting error messages.
+* You can redirect the Standard Error using `2>`.
+
+One of the great things about small tools is their flexibility.
+If you write a program that does onw thing really well, chances are you will be able to use it lots of contexts.
+
+**Tips for Designing Small Tools**:
+* They can read data from the Standard Input.
+* They can display data on the Standard Output.
+* They deal with text data rather than obscure binary formats.
+* They each perform one simple task.
+
+To connect two tools we can use the `|` operator that connects the Standard Output of one process to the Standard Input of another process.
+
+When using pipes both programs can run at the same time.
+When the first program begins outputting data, the second program can begin.
+
+**Bullet Points**: 
+* If you want to perform a different task, consider writing a separate small tool.
+* Design tools to work with Standard Input and Standard Output.
+* Small tools normally read and write text data. 
+* You can connect the Standard Output of one process to the Standard Input of another process using a pipe `|`.
+
+Sometimes you need to create other data streams that your program can use.
+This can be done by using the `fopen()` function. 
+Each data stream is represented by a pointer to a file and therefore you can used `fopen()` to write to several files.
+```c
+FILE *in_file = fopen("input.txt", "r");
+FILE *out_file = fopen("output.txt", "w");
+FILE *append_file = fopen("append.txt", "a");
+```
+The `FILE` type states that the program should create a data stream.
+The `fopen()` function has two parameters: a filename and a mode.
+The three values in the second parameter of `fopen()` are:
+* `"r"` reads content from the specified file.
+* `"w"` writes content to the specified file.
+* `"a"` appends content to the specified file.
+
+Once the datastream has been created you can use `fprintf()` to print to it.
+To read content from a filestream you can use `fscanf()`.
+```c
+fprintf(out_file, "Text to write to file");
+fscanf(in_file, "%79[^\n]\n", sentence);
+```
+
+When done with the data stream, close it with `fclose(in_file)`.
+Most of the time the data streams are closed automatically.
+But there is a limited number of data streams that can be used within a process.
+Most of the time it is 256.
+This is why it is a good practice to close the data stream when done using it.
+
+
+
+
 
 ## 4 - Using Multiple Source Files: Break it Down, Build it Up
 
