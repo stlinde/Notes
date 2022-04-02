@@ -528,8 +528,70 @@ But there is a limited number of data streams that can be used within a process.
 Most of the time it is 256.
 This is why it is a good practice to close the data stream when done using it.
 
+The `main()` function can read the command-line arguments as an array of strings.
 
+```c
+int main(int argc, char *argv[])
+{
+// ... Do stuff ...
+}
+```
 
+Because C does not have string built-ins, it reads them as an array of character pointers to strings.
+Like any array in C, you need some way of knowing how long the arrays is.
+That is why the `main()` function has two parameters.
+The `argc` value is a count of the number of elements in the array.
+
+Command-line arguments give your program a lot more flexibility, and it is worth thinking about which things you want your users to tweak at runtime.
+
+I will make your program a lot more valuable to them.
+
+The function `getopt()` is used for dealing with command-line options.
+Each time you call it, it returns the next option it finds on the command-line.
+The `getopt()` function is part of the `<unistd.h>` library.
+The `<unistd.h>` header is not part of the standard C library.
+Instead, it gives your programs access to some of the POSIX libraries.
+POSIX was an attempt to create a common set of functions for use across all popular operating systems.
+
+You can handle the `getopt()` options in a loop:
+```c
+#include <unistd.h>
+...
+while ((ch = getopt(argc, argv, "ae:")) != EOF)
+    switch(ch) {
+    ...
+    case 'e':
+        engine_count = optarg;
+    ...
+    }
+
+argc -= optind;
+argv += optind;
+```
+The above example have a few pieces of code that must be explained:
+* The `"ae:"` means that the `a` and `e` option is valid.
+* The `:` piece of the above command means that the `e` option needs an argument.
+* The `case 'e':` part is for reading the required argument passed to the `e` option. 
+* The final two lines make sure we skip past the options we read. `optind` stores the number of strings read from the command line to get past the options.
+
+When calling the options on the command line you can also combine them, so instead of `-a -e` you can write `-ae`.
+The order of the options doesn't matter due to the setup with `switch()`. 
+
+After processing the arguments, the 0th argument will no longer be the program name.
+Therefore, the new `argv` array will be `argv[0]`...
+
+A lot of C programmers spend their time creating small tools, and most of the small tools you see in operating systems like Linux are written in C.
+If you are careful in how you design them, and if you make sure that you design tools that **do one thing**, **do that one thing well**, and **integrate well** you're well on course to become a kick-ass C coder.
+
+**Bullet Points**
+* There are two versions of the `main()` function - one with command-line arguments and one without.
+* Command-line arguements are passed to `main()` as an argument and an array of pointers to the argument strings.
+* Command-line options are command-line arguments prefixed with `-`.
+* The `getopt()` function from `<unistd.h>` helps you deal with command-line options.
+* You define valid options by passing a string to `getopt()` like `ae:`.
+* A `:` (colon) following an option in the string means that the option takes an additional argument.
+* `getopt()` will record the options argument using the `optarg` variable.
+* After you have read all of the options, you should skip past them using the `optind` variable.
 
 
 ## 4 - Using Multiple Source Files: Break it Down, Build it Up
