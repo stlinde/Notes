@@ -2,7 +2,6 @@
 
 ***Authors***: David Griffiths & Dawn Griffeths
 
-
 ## Introduction
 If you really want to learn, and you want to learn more quickly and more deeply, pay attention to how you pay attention.
 Think about how you think .
@@ -595,6 +594,170 @@ If you are careful in how you design them, and if you make sure that you design 
 
 
 ## 4 - Using Multiple Source Files: Break it Down, Build it Up
+In this chapter, you'll learn how C allows you to break your source code into small, manageble chunks and then rebuild them into one huge program.
+Along the way, you'll learn a bit more about data type subleties and get to meet your new best friend: **make**.
+
+#### Quick Guide to Data Types
+`char`:
+Each character is stored in the computer's memory as a character code.
+And that is just a number.
+So when the computer sees `A`, to the computer it's the same thing as seeing the literal number `65`.
+
+`int`:
+If you need to store a whole number, you can generally just use an `int`.
+The exact maximum size of an `int` can vary, but it is guaranteed to be at least 16 bits.
+In general, an `int` can store numbers up to a few million.
+
+`short`:
+But sometimes you want to save a little memory.
+A `short` nmber usually takes about half of the space of an `int`. 
+
+`long`:
+The `long` data type takes up twice the memory of an `int`, and it can hold numbers in the billions.
+But because most computers can deal with really large `ints`, on a lot of machines, the `long` data type is exactly the same size as an `int`.
+The maximum size of a `long` is guaranteed to be at least 32 bits.
+
+`float`:
+`float` is the basic data type for storing floating-point numbers. 
+For most everyday floating-point numbers you can use the `float`. 
+
+`double`:
+If you want to perform calculations that are accurate to a larger number of decimal places, then you migth want to use a `double`.
+A `double` takes up twice the memory of a `float`, and it uses that extra space to store numbers that are larger and more precise.
+
+Be careful about storing larger data types into smaller ones, sometimes the compiler will be able to catch it, but it is not a given.
+
+To convert an `int` to a `float` we can use casting:
+```c
+int x = 7;
+int y = 3;
+float z = (float)x / (float)y;
+```
+
+The `float` will cast an integer value into a `float` value.
+
+There are other keywords you can use before data types to change the way that the numbers are interpreted:
+```c
+unsigned int x;
+long double d;
+```
+The `unsigned` keyword can be put before something that you know will always be positive.
+This way, an `unsigned int` can store a number twice as large as the maximum number of an `int`.
+
+The `long` keyword makes a data type longer (that is allocates more bits to it).
+
+C uses differnet data types on different operating systems and processors because that allows it to make the most of the hardware.
+
+You can avoid the compiler making assumptions by explicitly telling it what functions it should expect.
+When you tell the compiler about a function, it is called a function declaration:
+```c
+float function_name();
+```
+The declaration is just a functino signature: a record of what the function will be called, what kind of parameters it will accept, and what type of data it will return. 
+Thus, if you have a lot of functions and you don't want to worry about their order, you can put a list of functino declarations at the start of your C program.
+
+But even better than that, C allows you to take that whole bunch of declarations out of your code and put them in a **header file**.
+
+To create a header, you just need to do two things:
+* Create a new file with a `.h` extension.
+  The header file should be named the same as your program.
+* Include your header file in your main program.
+  Like this `#include "header_file.h"`.
+
+When the compiler sees an `include` line with angle brackets, it assumes it will find the header file somewhere in off in the directories where the library code lives.
+When it sees an `include` line with quotes it will look in the same directory as the program.
+
+Separating the declarations into a separate header file keeps your main code a little shorter, and has another big advantage.
+
+The compiler cconverts the C source code into assembly code.
+But all of the stages that convert the C source code into the final executable is called compilation, and the `gcc` tool allows you to control those stages. 
+The `gcc` tool does preprocessing and compilation.
+
+Preprocessing is the first stage in converting the C source code into a working executable.
+Preprocessing creates a modified version of the source code just before the proper compilation begins.
+In you code, the preprocessing step read the contents of the header file into the main file
+
+The preprocessing does not create an actual file, but rather use pipes for sending stuff through the phases of the compiler to make things more efficient.
+
+**Bullet Points**
+* If the compiler finds a call to a function it hasn't heard of, it will assume the function returns an `int`.
+* So if you try to cal a function before you define it, there can be problems.
+* Function declarations tell the compiler what your function will look like before you define them.
+* If function declarations appear at the top of your source code, the compiler won't get confused about return types.
+* Function declarations are often put into header files.
+* You can tell the compiler to read the contents of a header file using `#include`.
+* The compiler will treat included code the same as the code that is typed into the source file.
+
+If you have a set of code that you want to share among several files, it makes a lot of sense to put that shared code into a separate `.c` file.
+To understand how this is possible you need to understand how a compiler works.
+
+**Preprocessing**: the first thing the compiler needs to do is to fix the source.
+It needs to add in any extra header files it's been told about using the `#include` directive.
+It might also need to expand or skip over some sections of the program.
+Once this is done, the source code is ready for the actual compilation.
+
+**Compilation**: The C programming langauge is converted into assembly language.
+Assembly language describes the individual instructions the central processor will have to follow when running the program.
+The C compiler has a whole set of recipes for each of the different parts of the C language.
+The assembly code generated from the C source code is then used to generate object code (machine code).
+This is the actual binary code that will be executed by the circuits inside the CPU.
+If you have given the compiler several source code files, then these have to be linked.
+This is done after transforming them into object code.
+Linking takes the separate object code files and transforms them into one executable.
+Linking will also make sure that the program is able to call library code properly.
+
+If you are going the share a `.c` file between programs you need to have a header file with the same name and include it in both the file with the shared code and the files you are using it in.
+
+**Bullet Points**:
+* You can share code by putting it into a separate C file.
+* You need to put the function declarations in a separate `.h` file.
+* Include the header file in every C file that needs to use the shared code.
+* List all of the C files needed in the compiler command.
+
+Breaking programs into separete smaller source files enables us to share code and to build large program.
+As you break your source code files down, you can begin to make self-contained pieces of code.
+And then build them together into large programs.
+
+If you have a project with a lot of source files, the compilation time can suddenly become quite long.
+To get around this, you can recompile only the files you have made changes to.
+First you need to compile the source files to object code `gcc -c *.c` will do this.
+Then you need to link the object code of these `.o` files by doing `gcc *.o -o launch`.
+Now you have an executable program.
+To change and recompile one of the source code files just run `gcc -c some_source_file.c` and then run the linker `gcc *.o -o launch`.
+This will speed up the project immensely.
+
+`make` is a tool that can run the compile command for you.
+The `make` command will check the timestampps of the source files and the generated files, and then it will only recompile the files if things have gotten out of date.
+
+Every file that `make` compiles is called a **target**.
+For every target, `make` needs to be told two things:
+* The dependencies. Which files the target is going to be generated from.
+* The recipe. The set of instructions it needs to run to generate the file.
+
+Together the above is calle a rule.
+The rules you need for `make` to run should be in a makefile:
+The is how you would use a makefile:
+```
+launch.o: launch.c launch.h thruster.h
+    gcc -c launch.c
+
+thruster.o: thruster.h thruster.c
+    gcc -c thruster.c
+
+launch: launch.o thruster.o
+    gcc launch.o thruster.o -o launch 
+```
+
+**Bullet Points**:
+* It can take a long time to compile a large number of files. 
+* You can speed up compilation time by storing object code in `.o` files.
+* The `gcc` can compile programs from object files as well as source files.
+* The `make` tool can be used to automate your builds.
+* `make` knows about the dependencies between files, so it can compile just the files that change. 
+* `make` needs to be told about you build with a makefile. 
+* Be careful formatting you makefile: don't forget to indent lines with tabs instead of spaces.
+
+
 
 ## C Lab 1 - Arduino
 
