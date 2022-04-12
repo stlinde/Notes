@@ -762,8 +762,150 @@ launch: launch.o thruster.o
 ## C Lab 1 - Arduino
 
 ## 5 - Structs, Unions, Bitfields: Rolling Your Own Structures
+`struct`s allow you to model real-world complexities by writing your own structures.
+In this chapter you will learn how to combine the basic data types into `struct`s, and handle uncertainties with `unions`.
+We'll also learn about `bitfields`.
+
+If you have a set of data that you need to bundle together into a single thing, then you can use a `struct`.
+The word `struct` is short for strutured data type.
+A `struct` will let you take different pieces and types of data and wrap them into one large new data type:
+```c
+struct fish {
+  const char *name;
+  const char *species;
+  int teeth;
+  int age;
+};
+```
+The `struct` is fixed length and the pieces of data inside the struct are given names.
+
+To create a variable with the struct type fish: `struct fish snappy = {"Snappy", "Piranha", 69, 4}`.
+
+One of the great things about data passing around inside `struct`s is that you can change the contents of your `struct` without having to change the functions that use it.
+This means that `struct`s don't just make your code easier to read, they also make it better able to cope with change.
+Wrapping parameters in a struct makes your code more stable.
+
+To read a value from a `struct` we must use the `.` operator with the name of the value appended: `variable_name.value_name`.
+
+When you are defining a `struct` in you program, like the `fish` `struct` above, you are not allocating memory.
+You are giving the program a template of how you want the data to be structured in this particular type.
+When you create an instance of the `struct` the program will allocate space in memory large enough to fit the entire instance of the struct.
+
+You can create `struct`s from other `struct`s 
+A `struct` is like an array, but not the same. It groups a number of pieces of data together.
+The `struct` variable name is a name for the `struct` itself.
+
+You can give your `struct` an alias, such that instead of referring to it as `struct cell_phone` you can refer to it as `phone`.
+This is done by using the `typedef` modifier:
+```c
+typedef struct cell_phone {
+  int cell_no;
+  const char *wallpaper;
+  float minutes_of_charge;
+} phone;
+...
+phone p = {5557879, "sinatra.png", 1.35};
+```
+
+`typedef` can shorten your code and make it easier to read.
+
+**Bullet Points**:
+* A `struct` is a data type made from a sequence of other data types.
+* `struct`s are fixed length.
+* `struct` fields are accessed by name using the `<struct>.<field name>` syntax (aka dot notation).
+* `struct` fields are stored in memory in the same order they appaar in the code.
+* You can nest `struct`s.
+* `typedef` creates an alias for a data type.
+* If you use `typedef` with a `struct`, then you can skip giving the `struct` a name.
+
+In C, all assignments copy data. 
+If you want to copy a reference to a piece of data, you should assign a pointer.
+
+You can change the value of a `struct` field by using dot notation as well:
+```c
+fish snappy = {"Snappy", "piranha", 69, 4};
+snappy.teeth = 68;
+```
+
+In C, parameters are passed to functions by value.
+That means that when you call a functions, the values you pass into it are assigned to the parameters. 
+So the parameters you use are only copies of the original values, and as such the original variable is not updated.
+If you want the functions that you are passing a `struct` to be able to update the original `struct` you need to pass a pointer to the original `struct`.
+When referring or updating fields of the `struct` you then need to use the `(*t).age` notation.
+The `(*t).age` and `t->age` notation is equal.
+
+**Bullet Points**:
+* When you call a function, the values are copied to the parameter variables.
+* You can create pointers to a `struct` just like any other type.
+* `pointer->field` is the same as `(*pointer).field`.
+* The `->` cuts down on parentheses and makes the code more readable.
+
+A union lets you reuse memory space. 
+Every time you create an instance of a `struct`, the computer will lay out the fields in memory, one after the other.
+A `union` will use the space for just one of the fields in its definitions.
+If you have a `union` called `quantity`, with fields called `count`, `weight`, and `volume`, the computer will give the `union` enough space for its largest field, and then leave it up to you to decide which value you will store in there.
+Whether you set the `count`, `weight`, or `volume` field, the data will go into the same space in memery.
+```c
+typedef union {
+  short count;
+  float weight;
+  float volume;
+} quantity; 
+```
+
+You can set the value of a union with the dotnotation.
+Or with designated initializers (can be used with `struct` as well):
+```c
+quantity a = {.weight=14}
+```
+
+To keep track of the values stored in a `union` some C programmers create an `enum`.
+Sometimes you don't want to store a number or piece of text.
+Instead, you want to store something from a list of symbols.
+This is why `enums` were invented.
+An `enum` lets you create a lkist of symbols: `enum colors {RED, GREEN, PUCE};`
+
+If you are creating a `struct` with a lot of yes/no (or `true`/`false`) values you are wasting a lot of space, each yes/no field should only take up 1 bit.
+This is what `bitfields` are for.
+
+When you are dealing with binary value, it would be great if you had some way of 1s and 0s in a literal like: `int x = 01010100;`.
+However, C does not support binary literals, but it does support hexadecimal literals.
+Every time C sees a number beginning with `0x` it treats the number as base 16: `int x = 0x54`
+You can convert hex to binary one digit at a time.
+Each hexadecimal digit mathes a binary digit of length four.
+
+A `bitfield` lets you specify how many bits an individual field will store.
+For example, you could write your `struct` like this:
+```c
+typedef struct {
+  unsigned int low_pass_vcf:1;
+  unsigned int filter_coupler:1;
+  unsigned int reverb;1;
+  unsigned int sequential:1;
+  ...
+} synth;
+```
+The `field_name:1;` lets you specify the number of bits used to store the value.
+If you have a sequence of bitfields, the computer can squash them together to save space.
+So if you have eight single-bit bitfields, the computer can store them in a single byte.
+
+Bitfields are also useful if you need to read low-level binary information.
+
+**Bullet Points**:
+* A `union` allows you to store different data types in the same memory location.
+* A designated initializer sets a field value by name.
+* Designated initializers are part of the C99 standard. They are not supported in C++.
+* If you declare a `union` with a value in {braces}, it will be stored with the type of the first field.
+* The compiler will let you store one field in a `union` and read a completely different field. But be careful! This can cause bugs.
+* `enum`s store symbols.
+* Bitfields allow you to store a field with a custom number of bits. 
+* Bitfields should be declared as `unsigned int`.
+
+
 
 ## 6 - Data Structures and Dynamic Memory: Building Bridges
+
+
 
 ## 7 - Advanced Functions: Turn Your Functions Up To 11
 
