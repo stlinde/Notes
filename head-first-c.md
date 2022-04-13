@@ -904,7 +904,31 @@ Bitfields are also useful if you need to read low-level binary information.
 
 
 ## 6 - Data Structures and Dynamic Memory: Building Bridges
+This chapter will focus on:
+* Linking `struct`s together.
+* How to use `struct` pointers to connect custom data types into large, complex data structures.
+* Explore key principles by creating linked lists.
+* How to make data structures cope with flexible amounts of data by dynamically allocating memory on the heap, and freeing it up when you are done .
+* Learn how `valgrind` can help with good housekeeping.
 
+To store a flexible amount of data, you need something more extensible than an array.
+You need a linked list.
+
+A linked list is an example of an abstract data structure.
+It is called an abstract data structure because a linked list is general: it can be used to store a lot of different kinds of data.
+In a linked list, as long as you know where the list starts, you can travel along the list of links, from one piece of data to the next, until you reach the end of the list.
+Another advantage of linked lists is that inserting data is very quick (must be O(1)).
+Linked lists allow you to store a variable amount of data, and they make it simple to add more data.
+
+Each `struct` in a linked list will need to connect to the `struct` next to it.
+A `struct` that links to another `struct` is called a recursive structure.
+Recursive structures contain pointers to other structures of the same type.
+
+If you want to use the nth element of a linked list, you will have to traverse the list until you reach that item.
+Compared to an array this is slow - linked list: O(n), array: O(1).
+But inserting in a linked list is O(1) whereas in an array it is O(n).
+Thus, you should not think of one data structure being better than another in general, it all depends on the task.
+4
 
 
 ## 7 - Advanced Functions: Turn Your Functions Up To 11
