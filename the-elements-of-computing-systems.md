@@ -51,12 +51,16 @@ A hardware designer starts from such primitive gates and designs more complicate
 Hardware designers plan an optimize the chip architecture using structured modeling formalisms like *Hardware Description Language* (also known as VHDL, v for virtual).
 Using VHDL one can completely plan, debug, and optimize the entire ship before a single penny is spent on actual production.
 
-We will be using the Verilog programming language instead of HDL.
-To compile it run:
-`iverilog -o output_file input_file.v`
+I will be using Go to run all the code and simulations within.
+
 
 
 ## 2 - Boolean Arithmetic
+In this chapter we build gate logic designs that represent numbers and perform arithmetic operations on them.
+Our starting point is the set of logic gates built in chapter 1, and our ending point is a fully functional Arithmetic Logical Unit (ALU).
+This is the centerpiece chip that executes all arithmetic and logical operations performed by the computer.
+
+ 
 
 ## 3 - Sequential Logic
 
