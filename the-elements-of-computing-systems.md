@@ -60,6 +60,32 @@ In this chapter we build gate logic designs that represent numbers and perform a
 Our starting point is the set of logic gates built in chapter 1, and our ending point is a fully functional Arithmetic Logical Unit (ALU).
 This is the centerpiece chip that executes all arithmetic and logical operations performed by the computer.
 
+Binary addition is a simple operation that runs deep.
+Remarkably, most of the operations performed by digital computers can be reduced to elementary additions of binary numbers.
+Therefore, constructive understanding of binary addition holds the key to the implementation of numerous computer operations that depend on it, one way or another.
+
+The value of a binary pattern like "10011" can be computed by the following code:
+```
+bin = "10011"
+value = 0
+for i in range(len(bin)):
+   value += bin[i] * 2^i
+```
+Thus, the value of "10011" will be: 1 * 2^4 + 0 * 2^3 + 0 * 2^2 + 1 * 2 ^ 1  + 1 * 2^0 = 19.
+
+A pair of binary numbers can be added digit by digit from right to left, according to the same method used for decimal addition.
+First we add the two right-most digits, also called the *least significant bits* (LSB) of the two binary numbers (this holds only in big-endian systems).
+Next, we add the resulting carry bit (either 0 or 1) to the sum of the next pair of bits up the significance ladder. 
+We continue the process until the two most significant bits (MSB) are added.
+If the last bit-wise addition generates a carry of 1, we can report overflow; otherwise, the addition completes successfully.
+
+We see that computer hardware for binary addition of two n-bit numbers can be built from logic gates designed to calculate the sum of three bits (pair of bits plus carry bit).
+The transfer of the resulting carry bit forward to the addition of the next significant pair of bits can be easily accomplished by proper wiring of the 3-bit adder gates.
+
+We use a hierarchy of three adders:
+* Half-adder: designed to add two bits.
+* Full-adder: designed to add three bits.
+* Adder: designed to add two n-bit numbers. 
  
 
 ## 3 - Sequential Logic
