@@ -86,8 +86,13 @@ To simplify our programs, we can write local procedures within the main procedur
 Doing this, nesting procedures within other procedures, is called block structure.
 Using block structure allow us to keep procedures local, but more importantly, it allows us to simplify the procedures, as we can reuse code.
 
+### 1.2 - Procedures and the Processes They Generate
+A procedure is a pattern for the local evolution of a computational process.
+A recursive process is characterized by a chain of deferred operations. 
+Carrying out this process requires that the interpreter keep track of the operations to be performed later on.
+A recursive process where the amount of information to keep track of grows linearly with n is a linear recursive process.
 
-
+An iterative process is one whose state can be summarized by a fixed number of state variables, together with a fixed rule that describes how te state 
 
 ## 2 - Building Abstractions with Data
 
