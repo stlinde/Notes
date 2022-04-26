@@ -65,9 +65,18 @@
 (define (cube-root x)
   (cube-iter (1.0 x)))
 
-(define (factorial n)
+; Recursive process O(n) time and O(n) space.
+(define (factorial_r n)
   (if (= n 1)
     1
-    (* n (factorial (- n 1)))))
+    (* n (factorial_r (- n 1)))))
 
-(factorial 5)
+; Iterative process O(n) time and O(1) space.
+(define (factorial_i n)
+  (define (iter product counter)
+    (if (> counter n)
+      product
+      (iter(* counter product)
+           (+ counter 1))))
+  (iter 1 1))
+

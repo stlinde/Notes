@@ -92,7 +92,35 @@ A recursive process is characterized by a chain of deferred operations.
 Carrying out this process requires that the interpreter keep track of the operations to be performed later on.
 A recursive process where the amount of information to keep track of grows linearly with n is a linear recursive process.
 
-An iterative process is one whose state can be summarized by a fixed number of state variables, together with a fixed rule that describes how te state 
+An iterative process is one whose state can be summarized by a fixed number of state variables, together with a fixed rule that describes how the state should be updated as the process moves from state to state and an (optional) end test that specifies the conditions under which the process should terminate.
+In computing n!, the number of steps required grows linearly with n.
+Such a process is called a linear iterative process.
+
+In contrasting iteration and recursion, we must be careful not to confuse the notion of a recursive process with the notion of a recursive procedure.
+A recursive procedure refers to the syntactic fact that the procedure definition referes to the procedure itself.
+When describing a process as following a pattern that is linearly recursive, we are speaking about how the process evolves, not about the syntax of how a procedure is written .
+It may seem disturbing that we refer to a recursive procedure such as fact-iter as generating an iterative process.
+However the process is really iterative: Its state is captured completely by its three state variables, and the interpereter need keep track of only three variables in order to execute the process.
+
+An implementation with the property that an iterative process executes in constant space ic called tail-recursive.
+With a tail-recursive implementation, iteration can be expressed using the ordinary procedure call mechanism, so that special iteration constructs are useful only as syuntactic sugar.
+
+In tree recursion the process uses a number of steps that grows exponentially with the input. 
+On the other hand, the space required grows only linearly with the input, because we need keep track only of which nodes are above us in the tree at any point in the computation.
+In general, the number of steps required by a tree-recursive process will be proportional to the number of nodes in the tree, while the space required will be proportional to the max depth of the tree.
+
+Iterative processes may be more efficient than tree recursive processes.
+But this does not mean that tree-recursive processes are useless.
+Considering processes that operate on hierarchically structured data rather than numbers, we will find that tree recursion is a natural an dpowerful tool.
+
+### 1.3 - Formulating Abstractions with Higher-Order Procedures
+Procedures are, in effect, abstractions that describe compound operations on numbers independent of the particular numbers.
+One of the things we should demand from a powerful programming language is the ability to build abstractions by assigning names to common patterns and then to work in terms of the abstractions directly.
+Procedures provide this ability.
+
+Procedures that manipulate procedures are called higher-order procedures.
+This section shows how higher-order procedures can serve as powerful abstraction mechanisms, vastly increasing the expressive power of our language.
+
 
 ## 2 - Building Abstractions with Data
 
