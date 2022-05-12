@@ -190,11 +190,79 @@ Chief among the principles of the object-oriented approach, which are intended t
 
 **Modularity**:
 Modularity refers to an organizing principle in which different components of a software system are divided into separate functional units.
+In Python a module is a collection of closely related functions and classes that are defined together in a single file of source code.
+Using modularity increases robustness because it is easier ot test and debug separate componentes before they are integrated into a larger system.
 
+**Abstraction**:
+The notion of abstraction is to distill a complicated system down to its most fundamental parts.
+Applying the abstraction paradigm to the design of data structures gives rise to abstract data types (ADTs).
+An ADT is a mathematical model of a data structure that specifies the type of data stored, the operations supported on them, and the types of parameters of the operations.
+An ADT specifies what each operation does, but not how it does it.
+We will typically refer to the collective set of behaviors supported by an ADT as its public interface.
+Python has a tradition of treating abstractions implicitly using a mechanism known as duck typing.
+More formally, Python supports abstract data types using a mechanism known as an abstract base class (ABC).
+An abstract base class cannot be instantiated, but it defines one or more common methods that all implementations of the abstraction may have.
+An ABC is realized by one or more concrete classes that inherit from the abstract base class while providing implementations for those methods declared by the ABC.
+Python's `abc` module provides formal support for ABCs.
+We will make use of several existing ABCs coming from Python's `collections` module, which includes definitions for several common data structure ADTs and concrete implementations of some of those abstractions. 
+
+**Encapsulation**:
+Different componenets of a software system should not reveal the internal details of their respective implementations.
+One of the main advantages of encapsulation is that it gives one programmer freedom to implement the details of a component, without concern that other programmers will be writing code that intricately depends on those internal decisions.
+The only constraint on the programmer of a component is to maintain the public interface for the component, as other programmers will be writing code that depends on that interface.
+
+**Design Patterns**:
+
+A design pattern describes a solution to a "typical" software design problem.
+A pattern provides a general template for a solution that can be applied in many different situations.
+It describes the main elements of a solution in an abstract way that can be specialized for the problem at hand.
+It consists of a name, which identifies the pattern; a context, which describes the scenarios for which this pattern can be applied; a template, which describes how the pattern is applied; and a result, which describes and analyzes what the pattern produces.
+
+The design patterns used in this book fall into two groups - patterns for solving algorithm design problems and patterns for solving software engineering problems.
+
+The algorithm design patterns that is used include the following:
+* Recursion.
+* Amortization.
+* Divide-and-conquer.
+* Prune-and-search, also known as decrease-and-conquer.
+* Brute force.
+* Dynamic programming.
+* The greedy method.
+
+The software engineering patterns used include the following:
+* Iterator.
+* Adapter.
+* Position.
+* Composition.
+* Template method.
+* Locator.
+* Factory method.
 
 ### Chapter 2.2 - Software Development
+Three major steps of software development:
+1. Design
+2. Implementation
+3. Testing and Debugging
+
+It is in the design step that we decide how to divide the workings of our program into classes, we decide how these classes will interact, what data each will store, and what actions each will perform.
+
+Bottom-up testing proceeds from lower-level components to higher-level components.
+Thus, bottom-level functions, which do not invoke other functions, are tested first, followed by functions that call only bottom-level functions, and so on.
+This form of testing is usually described as unit testing, as the functionality of a specific component is tested in isolation of the larger software project.
+If used properly, this strategy better isolates the cause of errors to the component being tested, as lower-level components upon which it relies should have already been thoroughly tested.
+It is common to put tests for code in modules/libraries is the `if __name__=='__main__':` section.
+More robust support for automation of unit testing is provided by Python's `unittest` module.
+This framework allows the grouping of individual test cases into larger test suites, and provides support for executing those suites, and reporting or analyzing the result of those tests.
+
+A better way to debug is using a debugger, which is a specialized environment for controlling and monitoring the execution of a program.
+The basic functionality of a debugger is inserting checkpoints within the code.
 
 ### Chapter 2.3 - Class Definitions
+In Python, every piece of data is represented as an instance of some class.
+A class provides a set of behaviors in the form of member functions (methods), with implementations that are common to all instances of that class.
+A class also serves as a blueprint for its instances, effectively determining the way that state information for each instance is represented in the form of attributes (also known as fields, instance variables, or data members).
+
+
 
 ### Chapter 2.4 - Inheritance
 
